@@ -1,3 +1,10 @@
+%% CEC 470 Computer Architecture Final Project 
+% Authors: Christian Ney, Gianni Dragos, Fiya Clerget, Angel Madrigal
+
+% Description: This program selects a audio file, the user 
+% would input their range of frequencies they would want to remove,
+% the program then removes that frequency range with a bandpass filter.
+
 clc;
 clear;
 clear sound;
@@ -72,26 +79,28 @@ audio_filtered = audio_filtered / max(abs(audio_filtered));
 
 fprintf("Processing time: %.2f sec\n", toc);
 
+%% Convert frequency axis to kHz
+f_plot_kHz = f_plot / 1000;
+
 %% Plot Input Spectrum
 figure;
 subplot(2,1,1);
-plot(f_plot, 20*log10(abs(X_plot)+1e-12));
+plot(f_plot_kHz, 20*log10(abs(X_plot)+1e-12));
 title('Input Spectrum');
-xlabel('Frequency (Hz)');
+xlabel('Frequency (kHz)');
 ylabel('Magnitude (dB)');
-xlim([f_low f_high]);
+xlim([f_low f_high] / 1000);
 grid on;
 
 %% Plot Filtered Spectrum 
 Xf_plot = X_filtered(half);
 subplot(2,1,2);
-plot(f_plot, 20*log10(abs(Xf_plot)+1e-12));
+plot(f_plot_kHz, 20*log10(abs(Xf_plot)+1e-12));
 title('Filtered Spectrum');
-xlabel('Frequency (Hz)');
+xlabel('Frequency (kHz)');
 ylabel('Magnitude (dB)');
-xlim([f_low f_high]);
+xlim([f_low f_high] / 1000);
 grid on;
-
 %% Play Audio
 fprintf('\nPlaying filtered audio...\n');
 sound(audio_filtered, Fs);
